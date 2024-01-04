@@ -1,0 +1,8 @@
+{
+	"$schema": "https://json.schemastore.org/web-manifest-combined.json",
+	"name": "Daisy",
+	"short_name": "Daisy",
+	"start_url": ".",
+	"display": "standalone",
+	"background_color": "#09090b"
+}
