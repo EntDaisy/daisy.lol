@@ -16,41 +16,42 @@ interface ConnectSession {
 }
 
 export async function handler(req: Request): Promise<Response> {
-	const form = await req.formData();
-	const parseRes = joinSchema.safeParse(Object.fromEntries(form));
+	try {
+		const form = await req.formData();
+		const parseRes = joinSchema.safeParse(Object.fromEntries(form));
 
-	if (!parseRes.success)
-		return Response.json(
-			{
-				success: false,
-				errors: parseRes.error.issues.map((issue) => issue.message),
-			},
-			{ status: 400 },
-		);
+		if (!parseRes.success)
+			return Response.json(
+				{
+					success: false,
+					errors: parseRes.error.issues.map((issue) => issue.message),
+				},
+				{ status: 400 },
+			);
 
-	const { username, password, entryId, code } = parseRes.data;
+		const { username, password, entryId, code } = parseRes.data;
 
-	const connectSession = await kv
-		.get<ConnectSession>(['verifiedSession', entryId])
-		.then((s) => s.value);
-	if (!connectSession || connectSession.code !== code)
-		return Response.json(
-			{ success: false, message: '인증되지 않은 세션이에요.' },
-			{ status: 403 },
-		);
+		const connectSession = await kv
+			.get<ConnectSession>(['verifiedSession', entryId])
+			.then((s) => s.value);
+		if (!connectSession || connectSession.code !== code)
+			return Response.json(
+				{ success: false, message: '인증되지 않은 세션이에요.' },
+				{ status: 403 },
+			);
 
-	const userId = generateId(15);
-	const hashedPassword = await hash(password);
+		const userId = generateId(15);
+		const hashedPassword = await hash(password);
 
-	const res = await graphql<{
-		userstatus: {
-			id: string;
-			username: string;
-			nickname: string;
-			profileImage: { filename: string; imageType: string } | null;
-		};
-	}>(
-		`query ($id: String) {
+		const userRes = await graphql<{
+			userstatus: {
+				id: string;
+				username: string;
+				nickname: string;
+				profileImage: { filename: string; imageType: string } | null;
+			};
+		}>(
+			`query ($id: String) {
     userstatus(id: $id) {
       id
       username
@@ -61,30 +62,29 @@ export async function handler(req: Request): Promise<Response> {
       }
     }
   }`,
-		{ id: entryId },
-	);
-	if (!res.userstatus)
-		return Response.json(
-			{ success: false, message: '엔트리 계정이 존재하지 않아요.' },
-			{ status: 400 },
+			{ id: entryId },
 		);
+		if (!userRes.userstatus)
+			return Response.json(
+				{ success: false, message: '엔트리 계정이 존재하지 않아요.' },
+				{ status: 400 },
+			);
 
-	const entryUser = {
-		id: res.userstatus.id,
-		username: res.userstatus.username,
-		nickname: res.userstatus.nickname,
-		profileImage: res.userstatus.profileImage
-			? `https://playentry.org/uploads/${res.userstatus.profileImage.filename.slice(
-					0,
-					2,
-			  )}/${res.userstatus.profileImage.filename.slice(2, 4)}/${
-					res.userstatus.profileImage.filename
-			  }.${res.userstatus.profileImage.imageType}`
-			: null,
-		updated: Date.now(),
-	};
+		const entryUser = {
+			id: userRes.userstatus.id,
+			username: userRes.userstatus.username,
+			nickname: userRes.userstatus.nickname,
+			profileImage: userRes.userstatus.profileImage
+				? `https://playentry.org/uploads/${userRes.userstatus.profileImage.filename.slice(
+						0,
+						2,
+				  )}/${userRes.userstatus.profileImage.filename.slice(2, 4)}/${
+						userRes.userstatus.profileImage.filename
+				  }.${userRes.userstatus.profileImage.imageType}`
+				: null,
+			updated: Date.now(),
+		};
 
-	try {
 		const [session] = await Promise.all([
 			db
 				.insert(userTable)

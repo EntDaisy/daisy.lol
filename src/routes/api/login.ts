@@ -6,28 +6,22 @@ import { kv } from '$utils/entry-api/fetch.ts';
 import { compare } from 'bcrypt';
 import type { Cookie } from 'oslo/cookie';
 
-interface ConnectSession {
-	id: string;
-	code: string;
-	date: number;
-}
-
 export async function handler(req: Request): Promise<Response> {
-	const form = await req.formData();
-	const parseRes = loginSchema.safeParse(Object.fromEntries(form));
-
-	if (!parseRes.success)
-		return Response.json(
-			{
-				success: false,
-				errors: parseRes.error.issues.map((issue) => issue.message),
-			},
-			{ status: 400 },
-		);
-
-	const { username, password } = parseRes.data;
-
 	try {
+		const form = await req.formData();
+		const parseRes = loginSchema.safeParse(Object.fromEntries(form));
+
+		if (!parseRes.success)
+			return Response.json(
+				{
+					success: false,
+					errors: parseRes.error.issues.map((issue) => issue.message),
+				},
+				{ status: 400 },
+			);
+
+		const { username, password } = parseRes.data;
+
 		const user = await db.query.userTable.findFirst({
 			where: (user, { eq }) => eq(user.username, username),
 		});
