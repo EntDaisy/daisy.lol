@@ -8,10 +8,12 @@ import * as $api_create_entry_session from "./routes/api/create-entry-session.ts
 import * as $api_join from "./routes/api/join.ts";
 import * as $api_login from "./routes/api/login.ts";
 import * as $api_logout from "./routes/api/logout.ts";
+import * as $api_update_entry_user from "./routes/api/update-entry-user.ts";
 import * as $api_verify_entry_session from "./routes/api/verify-entry-session.ts";
 import * as $index from "./routes/index.tsx";
 import * as $themes from "./routes/themes.tsx";
 import * as $auth_account_box from "./islands/auth/account-box.tsx";
+import * as $auth_entry_user_updater from "./islands/auth/entry-user-updater.ts";
 import * as $auth_join from "./islands/auth/join.tsx";
 import * as $auth_login from "./islands/auth/login.tsx";
 import * as $auth_modal from "./islands/auth/modal.tsx";
@@ -26,12 +28,14 @@ const manifest = {
     "./routes/api/join.ts": $api_join,
     "./routes/api/login.ts": $api_login,
     "./routes/api/logout.ts": $api_logout,
+    "./routes/api/update-entry-user.ts": $api_update_entry_user,
     "./routes/api/verify-entry-session.ts": $api_verify_entry_session,
     "./routes/index.tsx": $index,
     "./routes/themes.tsx": $themes,
   },
   islands: {
     "./islands/auth/account-box.tsx": $auth_account_box,
+    "./islands/auth/entry-user-updater.ts": $auth_entry_user_updater,
     "./islands/auth/join.tsx": $auth_join,
     "./islands/auth/login.tsx": $auth_login,
     "./islands/auth/modal.tsx": $auth_modal,

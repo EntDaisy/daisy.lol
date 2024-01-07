@@ -14,7 +14,10 @@ export function AccountBox({ user, editing }: AccountBoxProps) {
         transition-colors duration-300 ease-in-out'
 		>
 			<img
-				src={user.profileImage}
+				src={
+					user.profileImage ??
+					'https://playentry.org/img/DefaultCardUserThmb.svg'
+				}
 				alt={`${user.nickname}의 프로필 사진`}
 				class='w-11 h-11
           border border-zinc-800 rounded-full

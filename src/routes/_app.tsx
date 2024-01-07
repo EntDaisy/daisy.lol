@@ -1,7 +1,9 @@
 import { Partial } from '$fresh/runtime.ts';
 import type { PageProps } from '$fresh/server.ts';
+import { useEffect } from 'preact/hooks';
 import { Sidebar } from '../components/layout/sidebar.tsx';
 import type { DaisyState } from './_middleware.ts';
+import { EntryUserUpdater } from '../islands/auth/entry-user-updater.ts';
 
 export default function App({
 	Component,
@@ -24,6 +26,7 @@ export default function App({
 				<Partial name='main'>
 					<Component />
 				</Partial>
+				<EntryUserUpdater user={state.user} />
 			</body>
 		</html>
 	);

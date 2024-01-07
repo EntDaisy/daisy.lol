@@ -19,6 +19,7 @@ export const lucia = new Lucia(adapter, {
 			profileImage: null as string | null,
 			createdAt: attributes.createdAt,
 			entryId: attributes.entryId,
+			updated: undefined as number | undefined,
 		};
 	},
 });

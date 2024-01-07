@@ -11,5 +11,6 @@ export { LogoutIcon } from './logout.tsx';
 export { MoreIcon } from './more.tsx';
 export { PaperPlaneIcon } from './paper-plane.tsx';
 export { PersonIcon } from './person.tsx';
+export { RefreshIcon } from './refresh.tsx';
 export { SearchIcon } from './search.tsx';
 export { SettingsIcon } from './settings.tsx';

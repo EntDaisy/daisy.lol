@@ -37,6 +37,7 @@ export async function handler(req: Request, ctx: FreshContext<DaisyState>) {
 					..._user,
 					nickname: entryUser.nickname,
 					profileImage: entryUser?.profileImage,
+					updated: entryUser.updated,
 			  }
 			: null;
 

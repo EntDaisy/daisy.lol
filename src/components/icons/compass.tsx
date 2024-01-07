@@ -1,4 +1,4 @@
-import type { EvaProps } from './index.ts';
+import type { EvaProps } from '$icons';
 
 export function CompassIcon(props: EvaProps) {
 	return (

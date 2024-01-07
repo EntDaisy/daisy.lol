@@ -2,7 +2,7 @@ import {
 	LoginIcon,
 	LogoutIcon,
 	MoreIcon,
-	PersonIcon,
+	RefreshIcon,
 	SettingsIcon,
 	type EvaIcon,
 } from '$icons';
@@ -21,10 +21,16 @@ interface ProfileItem {
 	href: string;
 	label: string;
 	logout?: boolean;
+	updateEntryUser?: boolean;
 }
 
 const items: ProfileItem[] = [
-	{ icon: PersonIcon, href: '/user', label: '내 프로필' },
+	{
+		icon: RefreshIcon,
+		href: '/api/update-entry-user',
+		label: '연동 새로고침',
+		updateEntryUser: true,
+	},
 	{ icon: SettingsIcon, href: '/settings', label: '설정' },
 	{ icon: LogoutIcon, href: '/api/logout', label: '로그아웃', logout: true },
 ];
@@ -96,60 +102,62 @@ export default function Profile({ user }: ProfileProps) {
               bg-zinc-950 border border-zinc-900 rounded-xl shadow-md
               transition-colors duration-300 ease-in-out'
 					>
-						{items.map(({ icon: Icon, href, label, logout }) => {
-							return (
-								<li>
-									{!logout ? (
-										<a
-											href={href}
-											class='flex items-center h-10 px-2.5
+						{items.map(
+							({ icon: Icon, href, label, logout, updateEntryUser }) => {
+								return (
+									<li>
+										{!(logout || updateEntryUser) ? (
+											<a
+												href={href}
+												class='flex items-center h-10 px-2.5
                         bg-transparent font-semibold border border-transparent rounded-[9px]
                         hover:bg-zinc-900 hover:border-zinc-800
                         group transition-colors duration-300 ease-in-out'
-										>
-											<Icon
-												class='flex-shrink-0 w-[18px] h-[18px] ml-0 fill-zinc-400
+											>
+												<Icon
+													class='flex-shrink-0 w-[18px] h-[18px] ml-0 fill-zinc-400
                           transition-colors duration-300 ease-in-out'
-											/>
-											<span
-												class='bg-transparent w-full ml-2
+												/>
+												<span
+													class='bg-transparent w-full ml-2
                           text-[15px] text-zinc-400 leading-4
                           transition-colors duration-300 ease-in-out'
-											>
-												{label}
-											</span>
-										</a>
-									) : (
-										<button
-											type='button'
-											class='flex items-center w-full h-10 px-2.5
+												>
+													{label}
+												</span>
+											</a>
+										) : (
+											<button
+												type='button'
+												class='flex items-center w-full h-10 px-2.5
                         bg-transparent font-semibold border border-transparent rounded-[9px]
                         hover:bg-red-500/15 hover:border-red-500/15
                         group transition-colors duration-300 ease-in-out'
-											onClick={async () => {
-												const res = await fetch('/api/logout').then((res) =>
-													res.json(),
-												);
-												if (res.success) location.reload();
-											}}
-										>
-											<Icon
-												class='flex-shrink-0 w-[18px] h-[18px] ml-0
+												onClick={async () => {
+													const res = await fetch(href).then((res) =>
+														res.json(),
+													);
+													if (res.success) location.reload();
+												}}
+											>
+												<Icon
+													class='flex-shrink-0 w-[18px] h-[18px] ml-0
                           fill-zinc-400 group-hover:fill-red-300
                           transition-colors duration-300 ease-in-out'
-											/>
-											<span
-												class='bg-transparent w-full ml-2
+												/>
+												<span
+													class='bg-transparent w-full ml-2
                           text-start text-[15px] text-zinc-400 leading-4 group-hover:text-red-300
                           transition-colors duration-300 ease-in-out'
-											>
-												{label}
-											</span>
-										</button>
-									)}
-								</li>
-							);
-						})}
+												>
+													{label}
+												</span>
+											</button>
+										)}
+									</li>
+								);
+							},
+						)}
 					</ul>
 				</dialog>
 			</div>
@@ -164,7 +172,10 @@ export default function Profile({ user }: ProfileProps) {
 					class='flex items-center gap-x-2.5 w-full pl-3 py-[11px]'
 				>
 					<img
-						src='https://playentry.org/img/DefaultCardUserThmb.svg'
+						src={
+							user.profileImage ??
+							'https://playentry.org/img/DefaultCardUserThmb.svg'
+						}
 						width='40'
 						height='40'
 						class='object-contain rounded-full'
