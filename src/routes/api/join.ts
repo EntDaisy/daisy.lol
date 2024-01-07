@@ -5,7 +5,7 @@ import { lucia } from '$utils/db/lucia.ts';
 import { userTable } from '$utils/db/schema.ts';
 import { kv } from '$utils/entry-api/fetch.ts';
 import { graphql } from '$utils/entry-api/graphql.ts';
-import { hash } from 'bcrypt';
+import { hashSync } from 'bcrypt';
 import { generateId } from 'lucia';
 import type { Cookie } from 'oslo/cookie';
 
@@ -41,7 +41,7 @@ export async function handler(req: Request): Promise<Response> {
 			);
 
 		const userId = generateId(15);
-		const hashedPassword = await hash(password);
+		const hashedPassword = hashSync(password);
 
 		const userRes = await graphql<{
 			userstatus: {

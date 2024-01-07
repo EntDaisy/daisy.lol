@@ -3,7 +3,7 @@ import { loginSchema } from '$utils/db/auth-schema.ts';
 import { db } from '$utils/db/drizzle.ts';
 import { lucia } from '$utils/db/lucia.ts';
 import { kv } from '$utils/entry-api/fetch.ts';
-import { compare } from 'bcrypt';
+import { compareSync } from 'bcrypt';
 import type { Cookie } from 'oslo/cookie';
 
 export async function handler(req: Request): Promise<Response> {
@@ -31,7 +31,7 @@ export async function handler(req: Request): Promise<Response> {
 				message: '아이디 또는 비밀번호가 일치하지 않아요.',
 			});
 
-		const passwordValid = await compare(password, user.password);
+		const passwordValid = compareSync(password, user.password);
 		if (!passwordValid) {
 			return Response.json({
 				success: false,
