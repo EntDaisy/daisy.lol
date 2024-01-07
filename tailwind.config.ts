@@ -40,6 +40,40 @@ export default ({
 			],
 		},
 		extend: {
+			keyframes: {
+				fadeScaleIn: {
+					'0%': { opacity: '0', transform: 'scale(0.95)' },
+					'100%': { opacity: '1', transform: 'scale(1)' },
+				},
+				fadeScaleOut: {
+					'0%': { opacity: '1', transform: 'scale(1)' },
+					'100%': { opacity: '0', transform: 'scale(0.95)' },
+				},
+				fadeIn: {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' },
+				},
+				fadeOut: {
+					'0%': { opacity: '1' },
+					'100%': { opacity: '0' },
+				},
+				scaleIn: {
+					'0%': { transform: 'scale(0.95)' },
+					'100%': { transform: 'scale(1)' },
+				},
+				scaleOut: {
+					'0%': { transform: 'scale(1)' },
+					'100%': { transform: 'scale(0.95)' },
+				},
+			},
+			animation: {
+				fadeScaleIn: 'fadeScaleIn 0.3s ease-in-out',
+				fadeScaleOut: 'fadeScaleOut 0.3s ease-in-out',
+				fadeIn: 'fadeIn 0.3s ease-in-out',
+				fadeOut: 'fadeOut 0.3s ease-in-out',
+				scaleIn: 'scaleIn 0.3s ease-in-out',
+				scaleOut: 'scaleOut 0.3s ease-in-out',
+			},
 			colors: {
 				brand: {
 					50: '#EBEEFF',

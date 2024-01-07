@@ -3,13 +3,27 @@
 		"$fresh/": "https://deno.land/x/fresh@1.6.1/",
 		"$icons": "./src/components/icons/index.ts",
 		"$std/": "https://deno.land/std@0.210.0/",
+		"$utils/": "./src/utils/",
+		"@libsql/client": "https://esm.sh/@libsql/client@0.4.0-pre.6",
+		"@lucia-auth/adapter-drizzle": "https://esm.sh/@lucia-auth/adapter-drizzle@1.0.0-beta.5",
 		"@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
 		"@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
+		"another-cookiejar": "https://deno.land/x/another_cookiejar@v5.0.4/mod.ts",
+		"another-cookiejar/cookie": "https://deno.land/x/another_cookiejar@v5.0.4/cookie.ts",
+		"bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+		"copy-to-clipboard": "https://esm.sh/copy-text-to-clipboard@3.2.0",
+		"drizzle-orm": "https://esm.sh/drizzle-orm@0.29.3",
+		"drizzle-orm/": "https://esm.sh/drizzle-orm@0.29.3/",
+		"fetch-cookie": "npm:fetch-cookie@2.1.0",
+		"lucia": "https://esm.sh/lucia@3.0.0-beta.14",
+		"oslo/cookie": "https://esm.sh/v135/oslo@0.27.0/dist/cookie/index.d.ts",
 		"preact": "https://esm.sh/preact@10.19.3",
 		"preact/": "https://esm.sh/preact@10.19.3/",
 		"tailwindcss": "npm:tailwindcss@3.4.0",
 		"tailwindcss/": "npm:/tailwindcss@3.4.0/",
 		"tailwindcss/plugin": "npm:/tailwindcss@3.4.0/plugin.js",
-		"tailwind-merge": "https://esm.sh/tailwind-merge@2.2.0"
+		"tailwind-merge": "https://esm.sh/tailwind-merge@2.2.0",
+		"tough-cookie": "npm:tough-cookie@4.1.3",
+		"zod": "https://deno.land/x/zod@v3.22.4/mod.ts"
 	}
 }

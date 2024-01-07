@@ -3,9 +3,9 @@
 	"tasks": {
 		"cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
 		"manifest": "deno task cli manifest $(pwd)",
-		"start": "deno run -A --unstable-hmr=static/,src/ src/dev.ts",
-		"build": "deno run -A src/dev.ts build",
-		"preview": "deno run -A main.ts",
+		"start": "deno run -A --unstable --unstable-hmr=static/,src/ src/dev.ts",
+		"build": "deno run -A --unstable src/dev.ts build",
+		"preview": "deno run -A --unstable main.ts",
 		"update": "deno run -A -r https://fresh.deno.dev/update .",
 		"deploy": "deployctl deploy --project=daisy --entrypoint=main.ts"
 	},
@@ -13,7 +13,8 @@
 		"jsx": "react-jsx",
 		"jsxImportSource": "preact"
 	},
-	"nodeModulesDir": true,
+	"lint": { "rules": { "exclude": ["no-explicit-any", "ban-ts-comment"] } },
+	"nodeModulesDir": false,
 	"importMap": "./import-map.json",
 	"deploy": {
 		"project": "b83a3a7a-2b11-45e5-86ce-fe4e575741f5",

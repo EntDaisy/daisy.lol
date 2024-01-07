@@ -2,7 +2,14 @@
 
 .vscode/
 dist/
+generated/
 node_modules/
+drizzle/
+bun.lockb
+
+prisma/migrations/
+prisma/*.db
+prisma/*.db-journal
 
 .DS_Store
 ._*

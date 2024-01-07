@@ -5,9 +5,15 @@ import {
 	PaperPlaneIcon,
 	type EvaIcon,
 } from '$icons';
+import type { User } from 'lucia';
+import { AuthModal } from '../../islands/auth/modal.tsx';
 import Profile from '../../islands/layout/profile.tsx';
 import { Logo } from '../common/logo.tsx';
 import { SearchBar } from './search-bar.tsx';
+
+interface SidebarProps {
+	user: User | null;
+}
 
 interface SidebarItem {
 	icon: EvaIcon;
@@ -17,12 +23,12 @@ interface SidebarItem {
 
 const items: SidebarItem[] = [
 	{ icon: CompassIcon, href: '/', label: '홈' },
-	{ icon: BrushIcon, href: '/themes', label: '테마' },
+	{ icon: BrushIcon, href: '/join', label: '테마' },
 	{ icon: CodeIcon, href: '/scripts', label: '스크립트' },
 	{ icon: PaperPlaneIcon, href: '/direct', label: 'Direct' },
 ];
 
-export function Sidebar() {
+export function Sidebar({ user }: SidebarProps) {
 	return (
 		<section class='flex flex-col h-screen px-3 border-r border-r-zinc-900 select-none'>
 			<div class='flex flex-col gap-y-2'>
@@ -70,8 +76,9 @@ export function Sidebar() {
 				})}
 			</div>
 			<div class='mt-auto mb-3'>
-				<Profile />
+				<Profile user={user} />
 			</div>
+			<AuthModal verifyId={Deno.env.get('VERIFY_ID') ?? ''} />
 		</section>
 	);
 }

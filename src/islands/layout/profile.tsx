@@ -1,48 +1,82 @@
 import {
+	LoginIcon,
 	LogoutIcon,
 	MoreIcon,
 	PersonIcon,
 	SettingsIcon,
 	type EvaIcon,
 } from '$icons';
-import { useSignal } from '@preact/signals';
+import { useOnDocument } from '$utils/hooks/use-on-document.ts';
+import { signal } from '@preact/signals';
+import type { User } from 'lucia';
 import { useRef } from 'preact/hooks';
-import { useOnDocument } from '../../lib/use-on-document.ts';
+import { openAuthModal } from '../auth/modal.tsx';
 
-const user = {
-	username: 'dukhwa',
-	nickname: '띠까',
-	entryId: '60bc5559659bf40bd15d022c',
-};
+interface ProfileProps {
+	user: User | null;
+}
 
 interface ProfileItem {
 	icon: EvaIcon;
 	href: string;
 	label: string;
-	dangerous?: boolean;
+	logout?: boolean;
 }
 
 const items: ProfileItem[] = [
 	{ icon: PersonIcon, href: '/user', label: '내 프로필' },
 	{ icon: SettingsIcon, href: '/settings', label: '설정' },
-	{ icon: LogoutIcon, href: '/logout', label: '로그아웃', dangerous: true },
+	{ icon: LogoutIcon, href: '/api/logout', label: '로그아웃', logout: true },
 ];
 
-export default function Profile() {
+const open = signal(false);
+const _open = signal(false);
+
+export const openModal = () => {
+	open.value = true;
+	_open.value = true;
+};
+export const closeModal = () => {
+	_open.value = false;
+	setTimeout(() => {
+		open.value = false;
+	}, 300);
+};
+
+export default function Profile({ user }: ProfileProps) {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const toggleRef = useRef<HTMLButtonElement>(null);
-	const open = useSignal(false);
 
 	useOnDocument('click', (e) => {
 		if (e.target instanceof Node) {
 			if (dialogRef.current?.contains(e.target)) return;
 			if (toggleRef.current?.contains(e.target)) {
-				open.value = !open.value;
+				if (open.value) closeModal();
+				else openModal();
 				return;
 			}
 		}
-		if (open.value) open.value = false;
+		if (open.value) closeModal();
 	});
+
+	if (!user)
+		return (
+			<button
+				type='button'
+				class='flex items-center gap-x-2 w-full px-3 py-2.5
+          border border-transparent rounded-xl 
+          hover:bg-zinc-900 hover:border-zinc-800 cursor-pointer
+          transition-colors duration-300 ease-in-out'
+				onClick={() => openAuthModal('login')}
+			>
+				<div class='flex items-center justify-center h-10'>
+					<LoginIcon class='w-6 h-6 fill-zinc-400' />
+					<span class='ml-2 font-semibold text-zinc-400 text-lg leading-4'>
+						로그인
+					</span>
+				</div>
+			</button>
+		);
 
 	return (
 		<>
@@ -50,41 +84,69 @@ export default function Profile() {
 				<dialog
 					ref={dialogRef}
 					open={open.value}
-					class='block absolute left-full bottom-1 p-0 m-0
-            bg-transparent opacity-0 scale-95 translate-x-[calc(-50%_-_27px)] border-none
-            open:opacity-100 open:scale-100
-            transition-[opacity_transform] duration-300 ease-in-out'
+					class='absolute left-[calc(100%_-_99px)] bottom-1 p-0 m-0
+            bg-transparent border-none
+            data-[open=false]:opacity-0 data-[open=false]:scale-95
+            data-[open=true]:opacity-100 data-[open=true]:scale-100
+            data-[open=true]:animate-fadeScaleIn data-[open=false]:animate-fadeScaleOut'
+					data-open={_open.value}
 				>
 					<ul
 						class='w-36 p-1.5
               bg-zinc-950 border border-zinc-900 rounded-xl shadow-md
               transition-colors duration-300 ease-in-out'
 					>
-						{items.map(({ icon: Icon, href, label, dangerous }) => {
+						{items.map(({ icon: Icon, href, label, logout }) => {
 							return (
 								<li>
-									<a
-										href={href}
-										class='flex items-center h-10 px-2.5
-                      bg-transparent font-semibold border border-transparent rounded-[9px]
-                      hover:bg-zinc-900 hover:border-zinc-800
-                      data-[dangerous]:hover:bg-red-500/15 data-[dangerous]:hover:border-red-500/15
-                      group transition-colors duration-300 ease-in-out'
-										data-dangerous={dangerous}
-									>
-										<Icon
-											class='flex-shrink-0 w-[18px] h-[18px] ml-0
-                        fill-zinc-400 group-data-[dangerous]:group-hover:fill-red-300
-                        transition-colors duration-300 ease-in-out'
-										/>
-										<span
-											class='bg-transparent w-full ml-2
-                        text-[15px] text-zinc-400 leading-4 group-data-[dangerous]:group-hover:text-red-300
-                        transition-colors duration-300 ease-in-out'
+									{!logout ? (
+										<a
+											href={href}
+											class='flex items-center h-10 px-2.5
+                        bg-transparent font-semibold border border-transparent rounded-[9px]
+                        hover:bg-zinc-900 hover:border-zinc-800
+                        group transition-colors duration-300 ease-in-out'
 										>
-											{label}
-										</span>
-									</a>
+											<Icon
+												class='flex-shrink-0 w-[18px] h-[18px] ml-0 fill-zinc-400
+                          transition-colors duration-300 ease-in-out'
+											/>
+											<span
+												class='bg-transparent w-full ml-2
+                          text-[15px] text-zinc-400 leading-4
+                          transition-colors duration-300 ease-in-out'
+											>
+												{label}
+											</span>
+										</a>
+									) : (
+										<button
+											type='button'
+											class='flex items-center w-full h-10 px-2.5
+                        bg-transparent font-semibold border border-transparent rounded-[9px]
+                        hover:bg-red-500/15 hover:border-red-500/15
+                        group transition-colors duration-300 ease-in-out'
+											onClick={async () => {
+												const res = await fetch('/api/logout').then((res) =>
+													res.json(),
+												);
+												if (res.success) location.reload();
+											}}
+										>
+											<Icon
+												class='flex-shrink-0 w-[18px] h-[18px] ml-0
+                          fill-zinc-400 group-hover:fill-red-300
+                          transition-colors duration-300 ease-in-out'
+											/>
+											<span
+												class='bg-transparent w-full ml-2
+                          text-start text-[15px] text-zinc-400 leading-4 group-hover:text-red-300
+                          transition-colors duration-300 ease-in-out'
+											>
+												{label}
+											</span>
+										</button>
+									)}
 								</li>
 							);
 						})}

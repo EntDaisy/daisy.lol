@@ -1,0 +1,135 @@
+import { setCookie } from '$std/http/cookie.ts';
+import { joinSchema } from '$utils/db/auth-schema.ts';
+import { db } from '$utils/db/drizzle.ts';
+import { lucia } from '$utils/db/lucia.ts';
+import { userTable } from '$utils/db/schema.ts';
+import { kv } from '$utils/entry-api/fetch.ts';
+import { graphql } from '$utils/entry-api/graphql.ts';
+import { hash } from 'bcrypt';
+import { generateId } from 'lucia';
+import type { Cookie } from 'oslo/cookie';
+
+interface ConnectSession {
+	id: string;
+	code: string;
+	date: number;
+}
+
+export async function handler(req: Request): Promise<Response> {
+	const form = await req.formData();
+	const parseRes = joinSchema.safeParse(Object.fromEntries(form));
+
+	if (!parseRes.success)
+		return Response.json(
+			{
+				success: false,
+				errors: parseRes.error.issues.map((issue) => issue.message),
+			},
+			{ status: 400 },
+		);
+
+	const { username, password, entryId, code } = parseRes.data;
+
+	const connectSession = await kv
+		.get<ConnectSession>(['verifiedSession', entryId])
+		.then((s) => s.value);
+	if (!connectSession || connectSession.code !== code)
+		return Response.json(
+			{ success: false, message: '인증되지 않은 세션이에요.' },
+			{ status: 403 },
+		);
+
+	const userId = generateId(15);
+	const hashedPassword = await hash(password);
+
+	const res = await graphql<{
+		userstatus: {
+			id: string;
+			username: string;
+			nickname: string;
+			profileImage: { filename: string; imageType: string } | null;
+		};
+	}>(
+		`query ($id: String) {
+    userstatus(id: $id) {
+      id
+      username
+      nickname
+      profileImage {
+        filename
+        imageType
+      }
+    }
+  }`,
+		{ id: entryId },
+	);
+	if (!res.userstatus)
+		return Response.json(
+			{ success: false, message: '엔트리 계정이 존재하지 않아요.' },
+			{ status: 400 },
+		);
+
+	const entryUser = {
+		id: res.userstatus.id,
+		username: res.userstatus.username,
+		nickname: res.userstatus.nickname,
+		profileImage: res.userstatus.profileImage
+			? `https://playentry.org/uploads/${res.userstatus.profileImage.filename.slice(
+					0,
+					2,
+			  )}/${res.userstatus.profileImage.filename.slice(2, 4)}/${
+					res.userstatus.profileImage.filename
+			  }.${res.userstatus.profileImage.imageType}`
+			: null,
+		updated: Date.now(),
+	};
+
+	try {
+		const [session] = await Promise.all([
+			db
+				.insert(userTable)
+				.values({
+					id: userId,
+					username,
+					password: hashedPassword,
+					entryId,
+					createdAt: Date.now(),
+				})
+				.then(() => lucia.createSession(userId, {})),
+			kv.set(['entryUser', entryId], entryUser),
+		]);
+		const sessionCookie: Cookie = lucia.createSessionCookie(session.id);
+		const res = Response.json({ success: true });
+
+		setCookie(res.headers, {
+			name: sessionCookie.name,
+			value: sessionCookie.value,
+			...sessionCookie.attributes,
+			sameSite: sessionCookie.attributes.sameSite
+				? (`${sessionCookie.attributes.sameSite
+						.at(0)
+						?.toUpperCase()}${sessionCookie.attributes.sameSite.slice(1)}` as
+						| 'Strict'
+						| 'Lax'
+						| 'None')
+				: undefined,
+		});
+
+		await kv.delete(['verifiedSession', entryId]);
+
+		return res;
+	} catch (err) {
+		if (err.name === 'LibsqlError' && err.code === 'SQLITE_CONSTRAINT') {
+			return Response.json(
+				{
+					success: false,
+					message: '이미 사용 중인 아이디에요.',
+				},
+				{ status: 409 },
+			);
+		}
+		console.log(err);
+	}
+
+	return Response.json({ success: false }, { status: 500 });
+}
