@@ -2,6 +2,7 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
 import * as $api_create_entry_session from "./routes/api/create-entry-session.ts";
@@ -10,9 +11,14 @@ import * as $api_login from "./routes/api/login.ts";
 import * as $api_logout from "./routes/api/logout.ts";
 import * as $api_update_entry_user from "./routes/api/update-entry-user.ts";
 import * as $api_verify_entry_session from "./routes/api/verify-entry-session.ts";
+import * as $direct from "./routes/direct.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $mypage from "./routes/mypage.tsx";
+import * as $scripts from "./routes/scripts.tsx";
+import * as $settings from "./routes/settings.tsx";
 import * as $themes from "./routes/themes.tsx";
+import * as $user_username_ from "./routes/user/[username].tsx";
+import * as $user_index from "./routes/user/index.tsx";
 import * as $auth_account_box from "./islands/auth/account-box.tsx";
 import * as $auth_entry_user_updater from "./islands/auth/entry-user-updater.ts";
 import * as $auth_join from "./islands/auth/join.tsx";
@@ -23,6 +29,7 @@ import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
+    "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
     "./routes/api/create-entry-session.ts": $api_create_entry_session,
@@ -31,9 +38,14 @@ const manifest = {
     "./routes/api/logout.ts": $api_logout,
     "./routes/api/update-entry-user.ts": $api_update_entry_user,
     "./routes/api/verify-entry-session.ts": $api_verify_entry_session,
+    "./routes/direct.tsx": $direct,
     "./routes/index.tsx": $index,
     "./routes/mypage.tsx": $mypage,
+    "./routes/scripts.tsx": $scripts,
+    "./routes/settings.tsx": $settings,
     "./routes/themes.tsx": $themes,
+    "./routes/user/[username].tsx": $user_username_,
+    "./routes/user/index.tsx": $user_index,
   },
   islands: {
     "./islands/auth/account-box.tsx": $auth_account_box,

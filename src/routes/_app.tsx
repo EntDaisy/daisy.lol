@@ -13,7 +13,7 @@ export default function App({
 		<html lang='ko'>
 			<head>
 				<meta charset='utf-8' />
-				<title>daisy.lol</title>
+				<title>Daisy</title>
 				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 				<meta name='theme-color' content='#09090b' />
 				<link rel='manifest' href='/manifest.json' />

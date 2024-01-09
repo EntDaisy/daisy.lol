@@ -31,13 +31,13 @@ const items: SidebarItem[] = [
 export function Sidebar({ user }: SidebarProps) {
 	return (
 		<section class='flex flex-col h-screen px-3 border-r border-r-zinc-900 select-none'>
-			<div class='flex flex-col gap-y-2'>
+			<a href='/' class='flex flex-col gap-y-2'>
 				<div class='flex items-center gap-x-2 px-2 mt-12'>
 					<Logo class='w-[34px] h-[34px]' />
 					<h1 class='font-display font-semibold text-[28px]'>Daisy</h1>
 				</div>
 				<SearchBar />
-			</div>
+			</a>
 			<div class='flex flex-col gap-y-0.5 mt-3'>
 				{items.map(({ icon: Icon, href, label }) => {
 					return (

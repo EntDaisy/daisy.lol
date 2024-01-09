@@ -1,10 +1,10 @@
 import { Head } from '$fresh/runtime.ts';
 
-export default function Themes() {
+export default function Scripts() {
 	return (
 		<>
 			<Head>
-				<title>테마 | Daisy</title>
+				<title>스크립트 | Daisy</title>
 			</Head>
 		</>
 	);
