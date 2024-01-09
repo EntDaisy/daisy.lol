@@ -1,13 +1,34 @@
 import { Partial } from '$fresh/runtime.ts';
 import type { PageProps } from '$fresh/server.ts';
-import { useEffect } from 'preact/hooks';
+import {
+	BrushIcon,
+	CodeIcon,
+	CompassIcon,
+	EvaIcon,
+	PaperPlaneIcon,
+} from '$icons';
+import Nav from '../components/layout/nav.tsx';
 import { Sidebar } from '../components/layout/sidebar.tsx';
-import type { DaisyState } from './_middleware.ts';
 import { EntryUserUpdater } from '../islands/auth/entry-user-updater.ts';
+import type { DaisyState } from './_middleware.ts';
+
+export interface Route {
+	icon: EvaIcon;
+	href: string;
+	label: string;
+}
+
+const routes: Route[] = [
+	{ icon: CompassIcon, href: '/', label: '홈' },
+	{ icon: BrushIcon, href: '/themes', label: '테마' },
+	{ icon: CodeIcon, href: '/scripts', label: '스크립트' },
+	{ icon: PaperPlaneIcon, href: '/direct', label: 'Direct' },
+];
 
 export default function App({
 	Component,
 	state,
+	url,
 }: PageProps<unknown, DaisyState>) {
 	return (
 		<html lang='ko'>
@@ -22,10 +43,13 @@ export default function App({
 				<link rel='stylesheet' href='/styles.css' />
 			</head>
 			<body class='grid grid-cols-[16rem_1fr]' f-client-nav>
-				<Sidebar user={state.user} />
-				<Partial name='main'>
-					<Component />
-				</Partial>
+				<Sidebar user={state.user} routes={routes} />
+				<div class='grid grid-rows-[64px_1fr]'>
+					<Nav routes={routes} pathname={url.pathname} />
+					<Partial name='main'>
+						<Component />
+					</Partial>
+				</div>
 				<EntryUserUpdater user={state.user} />
 			</body>
 		</html>

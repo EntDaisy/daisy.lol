@@ -1,4 +1,5 @@
 import {
+	EntryIcon,
 	LoginIcon,
 	LogoutIcon,
 	MoreIcon,
@@ -10,7 +11,6 @@ import { useOnDocument } from '$utils/hooks/use-on-document.ts';
 import { signal } from '@preact/signals';
 import type { User } from 'lucia';
 import { useRef } from 'preact/hooks';
-import { EntryIcon } from '../../components/icons/entry.tsx';
 import { openAuthModal } from '../auth/modal.tsx';
 
 interface ProfileProps {

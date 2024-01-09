@@ -1,34 +1,16 @@
-import {
-	BrushIcon,
-	CodeIcon,
-	CompassIcon,
-	PaperPlaneIcon,
-	type EvaIcon,
-} from '$icons';
 import type { User } from 'lucia';
 import { AuthModal } from '../../islands/auth/modal.tsx';
 import Profile from '../../islands/layout/profile.tsx';
+import type { Route } from '../../routes/_app.tsx';
 import { Logo } from '../common/logo.tsx';
 import { SearchBar } from './search-bar.tsx';
 
 interface SidebarProps {
 	user: User | null;
+	routes: Route[];
 }
 
-interface SidebarItem {
-	icon: EvaIcon;
-	href: string;
-	label: string;
-}
-
-const items: SidebarItem[] = [
-	{ icon: CompassIcon, href: '/', label: '홈' },
-	{ icon: BrushIcon, href: '/themes', label: '테마' },
-	{ icon: CodeIcon, href: '/scripts', label: '스크립트' },
-	{ icon: PaperPlaneIcon, href: '/direct', label: 'Direct' },
-];
-
-export function Sidebar({ user }: SidebarProps) {
+export function Sidebar({ user, routes }: SidebarProps) {
 	return (
 		<section class='flex flex-col sticky top-0 h-screen px-3 border-r border-r-zinc-900 select-none'>
 			<a href='/' class='flex flex-col gap-y-2'>
@@ -39,7 +21,7 @@ export function Sidebar({ user }: SidebarProps) {
 				<SearchBar />
 			</a>
 			<div class='flex flex-col gap-y-0.5 mt-3'>
-				{items.map(({ icon: Icon, href, label }) => {
+				{routes.map(({ icon: Icon, href, label }) => {
 					return (
 						<a
 							href={href}

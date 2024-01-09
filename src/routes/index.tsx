@@ -7,7 +7,12 @@ export default function Index() {
 				<title>홈 | Daisy</title>
 			</Head>
 			<div>
-				<button type='button'>로그인</button>
+				{new Array(10).fill(
+					<img
+						src='https://playentry.org/uploads/sg/e8/sge8t6brklsv58r7003hf51f2bdzzowb.svg'
+						alt=''
+					/>,
+				)}
 			</div>
 		</>
 	);

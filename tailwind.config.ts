@@ -27,6 +27,8 @@ export default ({
 			],
 			display: [
 				'Onest',
+				'"Pretendard Variable"',
+				'Pretendard',
 				'-apple-system',
 				'BlinkMacSystemFont',
 				'system-ui',
