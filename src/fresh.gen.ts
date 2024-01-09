@@ -11,6 +11,7 @@ import * as $api_logout from "./routes/api/logout.ts";
 import * as $api_update_entry_user from "./routes/api/update-entry-user.ts";
 import * as $api_verify_entry_session from "./routes/api/verify-entry-session.ts";
 import * as $index from "./routes/index.tsx";
+import * as $mypage from "./routes/mypage.tsx";
 import * as $themes from "./routes/themes.tsx";
 import * as $auth_account_box from "./islands/auth/account-box.tsx";
 import * as $auth_entry_user_updater from "./islands/auth/entry-user-updater.ts";
@@ -31,6 +32,7 @@ const manifest = {
     "./routes/api/update-entry-user.ts": $api_update_entry_user,
     "./routes/api/verify-entry-session.ts": $api_verify_entry_session,
     "./routes/index.tsx": $index,
+    "./routes/mypage.tsx": $mypage,
     "./routes/themes.tsx": $themes,
   },
   islands: {

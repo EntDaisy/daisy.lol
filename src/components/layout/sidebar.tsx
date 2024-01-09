@@ -23,7 +23,7 @@ interface SidebarItem {
 
 const items: SidebarItem[] = [
 	{ icon: CompassIcon, href: '/', label: '홈' },
-	{ icon: BrushIcon, href: '/join', label: '테마' },
+	{ icon: BrushIcon, href: '/themes', label: '테마' },
 	{ icon: CodeIcon, href: '/scripts', label: '스크립트' },
 	{ icon: PaperPlaneIcon, href: '/direct', label: 'Direct' },
 ];

@@ -7,7 +7,6 @@ interface EntryUserUpdaterProps {
 
 export function EntryUserUpdater({ user }: EntryUserUpdaterProps) {
 	useEffect(() => {
-		console.log('zz');
 		let timeout: Timer;
 		if (user?.updated && Date.now() - user.updated >= 1000 * 60 * 5) {
 			timeout = setTimeout(() => {

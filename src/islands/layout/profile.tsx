@@ -10,6 +10,7 @@ import { useOnDocument } from '$utils/hooks/use-on-document.ts';
 import { signal } from '@preact/signals';
 import type { User } from 'lucia';
 import { useRef } from 'preact/hooks';
+import { EntryIcon } from '../../components/icons/entry.tsx';
 import { openAuthModal } from '../auth/modal.tsx';
 
 interface ProfileProps {
@@ -20,8 +21,9 @@ interface ProfileItem {
 	icon: EvaIcon;
 	href: string;
 	label: string;
-	logout?: boolean;
-	updateEntryUser?: boolean;
+	dangerous?: boolean;
+	button?: boolean;
+	newTab?: boolean;
 }
 
 const items: ProfileItem[] = [
@@ -29,10 +31,17 @@ const items: ProfileItem[] = [
 		icon: RefreshIcon,
 		href: '/api/update-entry-user',
 		label: '연동 새로고침',
-		updateEntryUser: true,
+		button: true,
 	},
+	{ icon: EntryIcon, href: '/mypage', label: '엔트리 프로필', newTab: true },
 	{ icon: SettingsIcon, href: '/settings', label: '설정' },
-	{ icon: LogoutIcon, href: '/api/logout', label: '로그아웃', logout: true },
+	{
+		icon: LogoutIcon,
+		href: '/api/logout',
+		label: '로그아웃',
+		dangerous: true,
+		button: true,
+	},
 ];
 
 const open = signal(false);
@@ -103,25 +112,27 @@ export default function Profile({ user }: ProfileProps) {
               transition-colors duration-300 ease-in-out'
 					>
 						{items.map(
-							({ icon: Icon, href, label, logout, updateEntryUser }) => {
+							({ icon: Icon, href, label, dangerous, button, newTab }) => {
 								return (
 									<li>
-										{!(logout || updateEntryUser) ? (
+										{!button ? (
 											<a
 												href={href}
 												class='flex items-center h-10 px-2.5
-                        bg-transparent font-semibold border border-transparent rounded-[9px]
-                        hover:bg-zinc-900 hover:border-zinc-800
-                        group transition-colors duration-300 ease-in-out'
+                          bg-transparent font-semibold border border-transparent rounded-[9px]
+                          hover:bg-zinc-900 hover:border-zinc-800
+                          group transition-colors duration-300 ease-in-out'
+												target={newTab ? '_blank' : '_self'}
+												rel={newTab ? 'noreferrer' : undefined}
 											>
 												<Icon
 													class='flex-shrink-0 w-[18px] h-[18px] ml-0 fill-zinc-400
-                          transition-colors duration-300 ease-in-out'
+                            transition-colors duration-300 ease-in-out'
 												/>
 												<span
 													class='bg-transparent w-full ml-2
-                          text-[15px] text-zinc-400 leading-4
-                          transition-colors duration-300 ease-in-out'
+                            text-[15px] text-zinc-400 leading-4
+                            transition-colors duration-300 ease-in-out'
 												>
 													{label}
 												</span>
@@ -130,25 +141,28 @@ export default function Profile({ user }: ProfileProps) {
 											<button
 												type='button'
 												class='flex items-center w-full h-10 px-2.5
-                        bg-transparent font-semibold border border-transparent rounded-[9px]
-                        hover:bg-red-500/15 hover:border-red-500/15
-                        group transition-colors duration-300 ease-in-out'
+                          bg-transparent font-semibold border border-transparent rounded-[9px]
+													hover:bg-zinc-900 hover:border-zinc-800
+													data-[dangerous]:hover:bg-red-500/15 data-[dangerous]:hover:border-red-500/15
+                          group transition-colors duration-300 ease-in-out'
 												onClick={async () => {
 													const res = await fetch(href).then((res) =>
 														res.json(),
 													);
 													if (res.success) location.reload();
 												}}
+												data-dangerous={dangerous}
 											>
 												<Icon
 													class='flex-shrink-0 w-[18px] h-[18px] ml-0
-                          fill-zinc-400 group-hover:fill-red-300
-                          transition-colors duration-300 ease-in-out'
+                            fill-zinc-400 group-data-[dangerous]:group-hover:fill-red-300
+                            transition-colors duration-300 ease-in-out'
 												/>
 												<span
 													class='bg-transparent w-full ml-2
-                          text-start text-[15px] text-zinc-400 leading-4 group-hover:text-red-300
-                          transition-colors duration-300 ease-in-out'
+                            text-start text-[15px] text-zinc-400 leading-4
+                            group-data-[dangerous]:group-hover:text-red-300
+                            transition-colors duration-300 ease-in-out'
 												>
 													{label}
 												</span>
@@ -194,7 +208,7 @@ export default function Profile({ user }: ProfileProps) {
 					ref={toggleRef}
 					type='button'
 					class='p-1 ml-auto bg-transparent border border-transparent rounded-lg
-          hover:bg-zinc-800 hover:border-zinc-700'
+            hover:bg-zinc-800 hover:border-zinc-700'
 				>
 					<MoreIcon class='w-5 h-5 fill-zinc-400' />
 				</button>
