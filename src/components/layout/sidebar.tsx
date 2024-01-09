@@ -30,7 +30,7 @@ const items: SidebarItem[] = [
 
 export function Sidebar({ user }: SidebarProps) {
 	return (
-		<section class='flex flex-col h-screen px-3 border-r border-r-zinc-900 select-none'>
+		<section class='flex flex-col sticky top-0 h-screen px-3 border-r border-r-zinc-900 select-none'>
 			<a href='/' class='flex flex-col gap-y-2'>
 				<div class='flex items-center gap-x-2 px-2 mt-12'>
 					<Logo class='w-[34px] h-[34px]' />
