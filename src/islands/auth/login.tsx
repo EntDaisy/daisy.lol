@@ -7,6 +7,8 @@ export function Login() {
 	const username = useSignal('');
 	const password = useSignal('');
 
+	const errorMessage = useSignal('');
+
 	return (
 		<form
 			class='flex flex-col items-center px-8'
@@ -19,7 +21,7 @@ export function Login() {
 				if (res.success) location.reload();
 			}}
 		>
-			<a href='/' class='flex items-center gap-x-2 px-2 mt-6'>
+			<div class='flex items-center gap-x-2 px-2 mt-6'>
 				<Logo class='w-[34px] h-[34px]' />
 				<h1
 					class='font-display font-semibold text-white text-[26px]
@@ -27,7 +29,12 @@ export function Login() {
 				>
 					Daisy
 				</h1>
-			</a>
+			</div>
+			{errorMessage.value && (
+				<div class='font-medium bg-red-950/70 text-red-500 w-full mt-3 px-3.5 py-2.5 border border-red-950 rounded-xl'>
+					{errorMessage.value}
+				</div>
+			)}
 			<label class='w-full mt-2'>
 				<span
 					class='font-medium text-zinc-400 text-sm leading-4
