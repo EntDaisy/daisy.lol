@@ -120,13 +120,24 @@ export async function handler(req: Request): Promise<Response> {
 		return res;
 	} catch (err) {
 		if (err.name === 'LibsqlError' && err.code === 'SQLITE_CONSTRAINT') {
-			return Response.json(
-				{
-					success: false,
-					message: '이미 사용 중인 아이디에요.',
-				},
-				{ status: 409 },
-			);
+			if (err.message.includes('user.username')) {
+				return Response.json(
+					{
+						success: false,
+						message: '이미 사용 중인 아이디에요.',
+					},
+					{ status: 409 },
+				);
+			}
+			if (err.message.includes('user.entry_id')) {
+				return Response.json(
+					{
+						success: false,
+						message: '이미 다른 계정과 연동된 엔트리 계정이에요.',
+					},
+					{ status: 409 },
+				);
+			}
 		}
 		console.log(err);
 	}

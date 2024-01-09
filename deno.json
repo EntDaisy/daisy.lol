@@ -7,7 +7,8 @@
 		"build": "deno run -A --unstable src/dev.ts build",
 		"preview": "deno run -A --unstable main.ts",
 		"update": "deno run -A -r https://fresh.deno.dev/update .",
-		"deploy": "deployctl deploy --project=daisy --entrypoint=main.ts"
+		"deploy": "deployctl deploy --project=daisy --entrypoint=main.ts",
+		"migrate": "bunx drizzle-kit generate:sqlite"
 	},
 	"compilerOptions": {
 		"jsx": "react-jsx",
