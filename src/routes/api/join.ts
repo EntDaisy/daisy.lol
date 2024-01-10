@@ -7,7 +7,6 @@ import { kv } from '$utils/entry-api/fetch.ts';
 import { graphql } from '$utils/entry-api/graphql.ts';
 import { hashSync } from 'bcrypt';
 import { generateId } from 'lucia';
-import type { Cookie } from 'oslo/cookie';
 
 interface ConnectSession {
 	id: string;
@@ -49,6 +48,7 @@ export async function handler(req: Request): Promise<Response> {
 				username: string;
 				nickname: string;
 				profileImage: { filename: string; imageType: string } | null;
+				coverImage: { filename: string; imageType: string } | null;
 			};
 		}>(
 			`query ($id: String) {
@@ -57,6 +57,10 @@ export async function handler(req: Request): Promise<Response> {
       username
       nickname
       profileImage {
+        filename
+        imageType
+      }
+      coverImage {
         filename
         imageType
       }
@@ -82,6 +86,14 @@ export async function handler(req: Request): Promise<Response> {
 						userRes.userstatus.profileImage.filename
 				  }.${userRes.userstatus.profileImage.imageType}`
 				: null,
+			coverImage: userRes.userstatus.coverImage
+				? `https://playentry.org/uploads/${userRes.userstatus.coverImage.filename.slice(
+						0,
+						2,
+				  )}/${userRes.userstatus.coverImage.filename.slice(2, 4)}/${
+						userRes.userstatus.coverImage.filename
+				  }.${userRes.userstatus.coverImage.imageType}`
+				: null,
 			updated: Date.now(),
 		};
 
@@ -98,7 +110,7 @@ export async function handler(req: Request): Promise<Response> {
 				.then(() => lucia.createSession(userId, {})),
 			kv.set(['entryUser', entryId], entryUser),
 		]);
-		const sessionCookie: Cookie = lucia.createSessionCookie(session.id);
+		const sessionCookie = lucia.createSessionCookie(session.id);
 		const res = Response.json({ success: true });
 
 		setCookie(res.headers, {

@@ -6,6 +6,7 @@ export interface EntryUser {
 	username: string;
 	nickname: string;
 	profileImage: string | null;
+	coverImage: string | null;
 	updated?: number;
 }
 
@@ -19,6 +20,7 @@ export async function getUser(id: string): Promise<EntryUser | null> {
 			username: string;
 			nickname: string;
 			profileImage: { filename: string; imageType: string } | null;
+			coverImage: { filename: string; imageType: string } | null;
 		};
 	}>(
 		`query ($id: String) {
@@ -27,6 +29,10 @@ export async function getUser(id: string): Promise<EntryUser | null> {
       username
       nickname
       profileImage {
+        filename
+        imageType
+      }
+      coverImage {
         filename
         imageType
       }
@@ -47,6 +53,14 @@ export async function getUser(id: string): Promise<EntryUser | null> {
 			  )}/${res.userstatus.profileImage.filename.slice(2, 4)}/${
 					res.userstatus.profileImage.filename
 			  }.${res.userstatus.profileImage.imageType}`
+			: null,
+		coverImage: res.userstatus.coverImage
+			? `https://playentry.org/uploads/${res.userstatus.coverImage.filename.slice(
+					0,
+					2,
+			  )}/${res.userstatus.coverImage.filename.slice(2, 4)}/${
+					res.userstatus.coverImage.filename
+			  }.${res.userstatus.coverImage.imageType}`
 			: null,
 		updated: Date.now(),
 	};

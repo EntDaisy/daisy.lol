@@ -1,6 +1,6 @@
 import { graphql } from '$utils/entry-api/graphql.ts';
-import { FreshContext } from '$fresh/server.ts';
-import { DaisyState } from '../_middleware.ts';
+import type { FreshContext } from '$fresh/server.ts';
+import type { DaisyState } from '../_middleware.ts';
 import { kv } from '$utils/entry-api/fetch.ts';
 
 export async function handler(
@@ -16,6 +16,7 @@ export async function handler(
 			username: string;
 			nickname: string;
 			profileImage: { filename: string; imageType: string } | null;
+			coverImage: { filename: string; imageType: string } | null;
 		};
 	}>(
 		`query ($id: String) {
@@ -24,6 +25,10 @@ export async function handler(
     username
     nickname
     profileImage {
+      filename
+      imageType
+    }
+    coverImage {
       filename
       imageType
     }
@@ -44,6 +49,14 @@ export async function handler(
 			  )}/${res.userstatus.profileImage.filename.slice(2, 4)}/${
 					res.userstatus.profileImage.filename
 			  }.${res.userstatus.profileImage.imageType}`
+			: null,
+		coverImage: res.userstatus.coverImage
+			? `https://playentry.org/uploads/${res.userstatus.coverImage.filename.slice(
+					0,
+					2,
+			  )}/${res.userstatus.coverImage.filename.slice(2, 4)}/${
+					res.userstatus.coverImage.filename
+			  }.${res.userstatus.coverImage.imageType}`
 			: null,
 		updated: Date.now(),
 	};

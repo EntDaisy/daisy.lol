@@ -7,7 +7,7 @@ export default function Index() {
 				<title>홈 | Daisy</title>
 			</Head>
 			<div>
-				{new Array(10).fill(
+				{new Array(1).fill(
 					<img
 						src='https://playentry.org/uploads/sg/e8/sge8t6brklsv58r7003hf51f2bdzzowb.svg'
 						alt=''

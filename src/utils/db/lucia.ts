@@ -3,6 +3,7 @@ import { sessionTable, userTable } from '$utils/db/schema.ts';
 import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { Lucia } from 'lucia';
 
+// @ts-ignore
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 
 export const lucia = new Lucia(adapter, {
@@ -17,6 +18,7 @@ export const lucia = new Lucia(adapter, {
 			username: attributes.username,
 			nickname: null as unknown as string,
 			profileImage: null as string | null,
+			coverImage: null as string | null,
 			createdAt: attributes.createdAt,
 			entryId: attributes.entryId,
 			updated: undefined as number | undefined,
