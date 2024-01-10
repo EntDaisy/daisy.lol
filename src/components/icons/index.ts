@@ -4,9 +4,11 @@ export type EvaProps = JSX.SVGAttributes<SVGSVGElement>;
 export type EvaIcon = (props: EvaProps) => JSX.Element;
 
 export { ArrowBackIcon } from './arrow-back.tsx';
+export { ArrowForwardIcon } from './arrow-forward.tsx';
 export { BellIcon } from './bell.tsx';
 export { BrushIcon } from './brush.tsx';
 export { CodeIcon } from './code.tsx';
+export { ColorPaletteIcon } from './color-palette.tsx';
 export { CompassIcon } from './compass.tsx';
 export { EntryIcon } from './entry.tsx';
 export { LoginIcon } from './login.tsx';
