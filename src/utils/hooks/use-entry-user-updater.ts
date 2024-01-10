@@ -1,11 +1,7 @@
-import { User } from 'lucia';
+import type { User } from 'lucia';
 import { useEffect } from 'preact/hooks';
 
-interface EntryUserUpdaterProps {
-	user: User | null;
-}
-
-export function EntryUserUpdater({ user }: EntryUserUpdaterProps) {
+export function useEntryUserUpdater(user: User | null) {
 	useEffect(() => {
 		let timeout: Timer;
 		if (user?.updated && Date.now() - user.updated >= 1000 * 60 * 5) {
@@ -15,6 +11,4 @@ export function EntryUserUpdater({ user }: EntryUserUpdaterProps) {
 		}
 		return () => clearTimeout(timeout);
 	}, []);
-
-	return null;
 }

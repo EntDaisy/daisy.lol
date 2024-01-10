@@ -15,7 +15,7 @@ export default function Nav({ routes, pathname }: NavProps) {
 
 	return (
 		<nav
-			class='flex items-center sticky top-0 w-full h-16 px-3 z-50
+			class='flex items-center sticky top-0 w-full h-16 px-3 z-40
         bg-zinc-950/80 backdrop-blur-lg border-b border-b-zinc-800
         select-none transition-colors duration-300 ease-in-out'
 		>

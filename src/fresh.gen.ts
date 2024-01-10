@@ -20,7 +20,6 @@ import * as $themes from "./routes/themes.tsx";
 import * as $user_username_ from "./routes/user/[username].tsx";
 import * as $user_index from "./routes/user/index.tsx";
 import * as $auth_account_box from "./islands/auth/account-box.tsx";
-import * as $auth_entry_user_updater from "./islands/auth/entry-user-updater.ts";
 import * as $auth_join from "./islands/auth/join.tsx";
 import * as $auth_login from "./islands/auth/login.tsx";
 import * as $auth_modal from "./islands/auth/modal.tsx";
@@ -51,7 +50,6 @@ const manifest = {
   },
   islands: {
     "./islands/auth/account-box.tsx": $auth_account_box,
-    "./islands/auth/entry-user-updater.ts": $auth_entry_user_updater,
     "./islands/auth/join.tsx": $auth_join,
     "./islands/auth/login.tsx": $auth_login,
     "./islands/auth/modal.tsx": $auth_modal,

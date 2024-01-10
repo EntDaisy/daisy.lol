@@ -9,7 +9,8 @@ import {
 } from '$icons';
 import Nav from '../components/layout/nav.tsx';
 import { Sidebar } from '../components/layout/sidebar.tsx';
-import { EntryUserUpdater } from '../islands/auth/entry-user-updater.ts';
+import { AuthModal } from '../islands/auth/modal.tsx';
+import { useEntryUserUpdater } from '../utils/hooks/use-entry-user-updater.ts';
 import type { DaisyState } from './_middleware.ts';
 
 export interface Route {
@@ -30,6 +31,8 @@ export default function App({
 	state,
 	url,
 }: PageProps<unknown, DaisyState>) {
+	useEntryUserUpdater(state.user);
+
 	return (
 		<html lang='ko'>
 			<head>
@@ -49,8 +52,8 @@ export default function App({
 					<Partial name='main'>
 						<Component />
 					</Partial>
+					<AuthModal verifyId={Deno.env.get('VERIFY_ID') ?? ''} />
 				</div>
-				<EntryUserUpdater user={state.user} />
 			</body>
 		</html>
 	);

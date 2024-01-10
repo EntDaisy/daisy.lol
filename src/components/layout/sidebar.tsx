@@ -1,5 +1,4 @@
 import type { User } from 'lucia';
-import { AuthModal } from '../../islands/auth/modal.tsx';
 import Profile from '../../islands/layout/profile.tsx';
 import type { Route } from '../../routes/_app.tsx';
 import { Logo } from '../common/logo.tsx';
@@ -60,7 +59,6 @@ export function Sidebar({ user, routes }: SidebarProps) {
 			<div class='mt-auto mb-3'>
 				<Profile user={user} />
 			</div>
-			<AuthModal verifyId={Deno.env.get('VERIFY_ID') ?? ''} />
 		</section>
 	);
 }

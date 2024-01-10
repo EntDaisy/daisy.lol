@@ -12,6 +12,7 @@ const authOpen = signal(false);
 const _authOpen = signal(false);
 
 export const openAuthModal = (page: 'login' | 'join') => {
+	console.log(page);
 	authPage.value = page;
 	authOpen.value = true;
 	_authOpen.value = true;
@@ -30,7 +31,7 @@ export function AuthModal({ verifyId }: AuthModalProps) {
 		<>
 			<dialog
 				open={authOpen.value}
-				class='w-screen h-screen bg-transparent group'
+				class='fixed w-full h-screen bg-transparent z-50 group'
 				onClick={(e) => {
 					if (e.target === ref.current) closeAuthModal();
 				}}
