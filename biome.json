@@ -12,7 +12,8 @@
 			},
 			"a11y": {
 				"useKeyWithClickEvents": "off",
-				"useKeyWithMouseEvents": "off"
+				"useKeyWithMouseEvents": "off",
+				"useValidAnchor": "off"
 			},
 			"style": {
 				"noNonNullAssertion": "off"

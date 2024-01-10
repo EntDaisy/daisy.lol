@@ -25,6 +25,7 @@ import * as $auth_login from "./islands/auth/login.tsx";
 import * as $auth_modal from "./islands/auth/modal.tsx";
 import * as $layout_back_button from "./islands/layout/back-button.tsx";
 import * as $layout_notification_button from "./islands/layout/notification-button.tsx";
+import * as $layout_page_title from "./islands/layout/page-title.tsx";
 import * as $layout_profile from "./islands/layout/profile.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -55,6 +56,7 @@ const manifest = {
     "./islands/auth/modal.tsx": $auth_modal,
     "./islands/layout/back-button.tsx": $layout_back_button,
     "./islands/layout/notification-button.tsx": $layout_notification_button,
+    "./islands/layout/page-title.tsx": $layout_page_title,
     "./islands/layout/profile.tsx": $layout_profile,
   },
   baseUrl: import.meta.url,

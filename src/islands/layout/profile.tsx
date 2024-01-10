@@ -124,6 +124,7 @@ export default function Profile({ user }: ProfileProps) {
                           group transition-colors duration-300 ease-in-out'
 												target={newTab ? '_blank' : '_self'}
 												rel={newTab ? 'noreferrer' : undefined}
+												onClick={() => closeModal()}
 											>
 												<Icon
 													class='flex-shrink-0 w-[18px] h-[18px] ml-0 fill-zinc-400

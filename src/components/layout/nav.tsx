@@ -1,18 +1,8 @@
 import { BackButton } from '../../islands/layout/back-button.tsx';
 import { NotificationButton } from '../../islands/layout/notification-button.tsx';
-import type { Route } from '../../routes/_app.tsx';
+import { PageTitle } from '../../islands/layout/page-title.tsx';
 
-interface NavProps {
-	routes: Route[];
-	pathname: string;
-}
-
-export default function Nav({ routes, pathname }: NavProps) {
-	const selectedRoute = routes.find(
-		(route) => route.href === `/${pathname.split('/')[1]}`,
-	);
-	const title = selectedRoute ? selectedRoute.label : null;
-
+export default function Nav() {
 	return (
 		<nav
 			class='flex items-center sticky top-0 w-full h-16 px-3 z-40
@@ -25,7 +15,7 @@ export default function Nav({ routes, pathname }: NavProps) {
           font-display font-semibold text-white text-lg
           transition-colors duration-300 ease-in-out'
 			>
-				{title}
+				<PageTitle />
 			</h2>
 			<div class='ml-auto' />
 			<NotificationButton />

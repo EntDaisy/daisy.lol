@@ -7,10 +7,11 @@ import {
 	EvaIcon,
 	PaperPlaneIcon,
 } from '$icons';
+import { useEntryUserUpdater } from '$utils/hooks/use-entry-user-updater.ts';
+import { useEffect } from 'preact/hooks';
 import Nav from '../components/layout/nav.tsx';
 import { Sidebar } from '../components/layout/sidebar.tsx';
 import { AuthModal } from '../islands/auth/modal.tsx';
-import { useEntryUserUpdater } from '../utils/hooks/use-entry-user-updater.ts';
 import type { DaisyState } from './_middleware.ts';
 
 export interface Route {
@@ -48,10 +49,12 @@ export default function App({
 			<body class='grid grid-cols-[16rem_1fr]' f-client-nav>
 				<Sidebar user={state.user} routes={routes} />
 				<div class='grid grid-rows-[64px_1fr]'>
-					<Nav routes={routes} pathname={url.pathname} />
-					<Partial name='main'>
-						<Component />
-					</Partial>
+					<Nav />
+					<main class='flex flex-col items-center'>
+						<Partial name='main'>
+							<Component />
+						</Partial>
+					</main>
 					<AuthModal verifyId={Deno.env.get('VERIFY_ID') ?? ''} />
 				</div>
 			</body>
