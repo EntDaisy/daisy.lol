@@ -15,7 +15,7 @@ export function Sidebar({ user, routes }: SidebarProps) {
 			<a href='/' class='flex flex-col gap-y-2'>
 				<div class='flex items-center gap-x-2 px-2 mt-12'>
 					<Logo class='w-[34px] h-[34px]' />
-					<h1 class='font-display font-semibold text-[28px]'>Daisy</h1>
+					<h1 class='font-display font-semibold text-[26px]'>Daisy</h1>
 				</div>
 				<SearchBar />
 			</a>
