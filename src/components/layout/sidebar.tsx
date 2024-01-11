@@ -1,5 +1,6 @@
 import type { User } from 'lucia';
 import Profile from '../../islands/layout/profile.tsx';
+import { SidebarItem } from '../../islands/layout/sidebar-item.tsx';
 import type { Route } from '../../routes/_app.tsx';
 import { Logo } from '../common/logo.tsx';
 import { SearchBar } from './search-bar.tsx';
@@ -20,39 +21,17 @@ export function Sidebar({ user, routes }: SidebarProps) {
 				<SearchBar />
 			</a>
 			<div class='flex flex-col gap-y-0.5 mt-3'>
-				{routes.map(({ icon: Icon, href, label }) => {
+				{routes.map((route) => {
 					return (
-						<a
-							href={href}
-							class='flex items-center h-[42px] px-3
-                bg-transparent border border-transparent rounded-xl
-                hover:bg-zinc-900 hover:border-zinc-800
-                data-[current]:bg-brand-500/15 data-[current]:border-brand-500/15
-                data-[current]:hover:bg-brand-400/15 data-[current]:hover:border-brand-400/15
-                data-[not-root]:data-[ancestor]:bg-brand-500/15
-                data-[not-root]:data-[ancestor]:border-brand-500/15
-                data-[not-root]:data-[ancestor]:hover:bg-brand-400/15
-                data-[not-root]:data-[ancestor]:hover:border-brand-400/15
-                group transition-colors duration-300 ease-in-out'
-							data-not-root={href !== '/' ? true : undefined}
-						>
-							<Icon
+						<SidebarItem route={route} user={user}>
+							<route.icon
 								class='flex-shrink-0 w-[18px] h-[18px]
                   fill-zinc-500
                   group-data-[current]:fill-brand-300
                   group-data-[not-root]:group-data-[ancestor]:fill-brand-300
                   transition-colors duration-300 ease-in-out'
 							/>
-							<span
-								class='w-full ml-2
-                font-[550] text-zinc-500 leading-4
-                group-data-[current]:text-brand-300
-                group-data-[not-root]:group-data-[ancestor]:text-brand-300
-                transition-colors duration-300 ease-in-out'
-							>
-								{label}
-							</span>
-						</a>
+						</SidebarItem>
 					);
 				})}
 			</div>

@@ -1,34 +1,15 @@
 import { Head } from '$fresh/runtime.ts';
-import { ArrowForwardIcon, ColorPaletteIcon } from '$icons';
+import type { PageProps } from '$fresh/server.ts';
+import { ThemeEditorChip } from '../islands/store/theme-editor-chip.tsx';
+import type { DaisyState } from './_middleware.ts';
 
-export default function Themes() {
+export default function Themes({ state }: PageProps<unknown, DaisyState>) {
 	return (
 		<>
 			<Head>
-				<title>테마 | Daisy</title>
+				<title>스토어 | Daisy</title>
 			</Head>
-			<a
-				href='/editor/theme'
-				class='flex items-center gap-x-1.5 px-3 py-2 mt-6
-          border border-zinc-800 hover:border-zinc-700 rounded-full
-          transition-colors duration-300 ease-in-out group'
-			>
-				<ColorPaletteIcon class='w-5 h-5 fill-brand-300' />
-				<span class='font-semibold text-[15px] text-brand-100 leading-4'>
-					Daisy 테마 편집기
-				</span>
-				<span class='font-semibold text-[15px] text-brand-100/50 leading-4'>
-					·
-				</span>
-				<span class='font-semibold text-[15px] text-brand-100/90 leading-4'>
-					나만의 테마를 만들어 보세요
-				</span>
-				<ArrowForwardIcon
-					class='w-3.5 h-3.5 -mx-0.5 -my-[3px]
-            fill-brand-100/50 group-hover:fill-brand-100/80
-            transition-colors duration-300 ease-in-out'
-				/>
-			</a>
+			<ThemeEditorChip user={state.user} />
 			<div class='w-full max-w-4xl pt-10'>
 				<h2 class='font-semibold text-[34px]'>인기 테마</h2>
 			</div>

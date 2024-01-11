@@ -3,7 +3,12 @@ import { Input } from '../../components/common/input.tsx';
 import { Logo } from '../../components/common/logo.tsx';
 import { authPage } from './modal.tsx';
 
-export function Login() {
+interface LoginProps {
+	redirect?: string;
+	useAnchor?: boolean;
+}
+
+export function Login({ redirect, useAnchor }: LoginProps) {
 	const username = useSignal('');
 	const password = useSignal('');
 
@@ -18,7 +23,10 @@ export function Login() {
 					method: 'POST',
 					body: new FormData(e.target as HTMLFormElement),
 				}).then((res) => res.json());
-				if (res.success) location.reload();
+				if (res.success) {
+					if (redirect) location.href = redirect;
+					else location.reload();
+				} else if (res.message) errorMessage.value = res.message;
 			}}
 		>
 			<div class='flex items-center gap-x-2 px-2 mt-6'>
@@ -96,15 +104,26 @@ export function Login() {
 			</button>
 			<div class='flex w-full mt-2.5 mb-5 font-medium text-sm'>
 				<span class='text-zinc-500'>계정이 없으신가요?&nbsp;</span>
-				<button
-					type='button'
-					class='text-brand-400 hover:underline cursor-pointer'
-					onClick={() => {
-						authPage.value = 'join';
-					}}
-				>
-					회원가입
-				</button>
+				{useAnchor ? (
+					<a
+						href={`/join${
+							redirect ? `?redirect=${encodeURIComponent(redirect)}` : ''
+						}`}
+						class='text-brand-400 hover:underline cursor-pointer'
+					>
+						회원가입
+					</a>
+				) : (
+					<button
+						type='button'
+						class='text-brand-400 hover:underline cursor-pointer'
+						onClick={() => {
+							authPage.value = 'join';
+						}}
+					>
+						회원가입
+					</button>
+				)}
 			</div>
 		</form>
 	);

@@ -2,6 +2,9 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $_auth_layout from "./routes/(auth)/_layout.tsx";
+import * as $_auth_join from "./routes/(auth)/join.tsx";
+import * as $_auth_login from "./routes/(auth)/login.tsx";
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
@@ -12,11 +15,11 @@ import * as $api_logout from "./routes/api/logout.ts";
 import * as $api_update_entry_user from "./routes/api/update-entry-user.ts";
 import * as $api_verify_entry_session from "./routes/api/verify-entry-session.ts";
 import * as $direct from "./routes/direct.tsx";
+import * as $editor from "./routes/editor.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $mypage from "./routes/mypage.tsx";
-import * as $scripts from "./routes/scripts.tsx";
 import * as $settings from "./routes/settings.tsx";
-import * as $themes from "./routes/themes.tsx";
+import * as $store from "./routes/store.tsx";
 import * as $user_username_ from "./routes/user/[username].tsx";
 import * as $user_index from "./routes/user/index.tsx";
 import * as $auth_account_box from "./islands/auth/account-box.tsx";
@@ -27,10 +30,15 @@ import * as $layout_back_button from "./islands/layout/back-button.tsx";
 import * as $layout_notification_button from "./islands/layout/notification-button.tsx";
 import * as $layout_page_title from "./islands/layout/page-title.tsx";
 import * as $layout_profile from "./islands/layout/profile.tsx";
+import * as $layout_sidebar_item from "./islands/layout/sidebar-item.tsx";
+import * as $store_theme_editor_chip from "./islands/store/theme-editor-chip.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
+    "./routes/(auth)/_layout.tsx": $_auth_layout,
+    "./routes/(auth)/join.tsx": $_auth_join,
+    "./routes/(auth)/login.tsx": $_auth_login,
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
@@ -41,11 +49,11 @@ const manifest = {
     "./routes/api/update-entry-user.ts": $api_update_entry_user,
     "./routes/api/verify-entry-session.ts": $api_verify_entry_session,
     "./routes/direct.tsx": $direct,
+    "./routes/editor.tsx": $editor,
     "./routes/index.tsx": $index,
     "./routes/mypage.tsx": $mypage,
-    "./routes/scripts.tsx": $scripts,
     "./routes/settings.tsx": $settings,
-    "./routes/themes.tsx": $themes,
+    "./routes/store.tsx": $store,
     "./routes/user/[username].tsx": $user_username_,
     "./routes/user/index.tsx": $user_index,
   },
@@ -58,6 +66,8 @@ const manifest = {
     "./islands/layout/notification-button.tsx": $layout_notification_button,
     "./islands/layout/page-title.tsx": $layout_page_title,
     "./islands/layout/profile.tsx": $layout_profile,
+    "./islands/layout/sidebar-item.tsx": $layout_sidebar_item,
+    "./islands/store/theme-editor-chip.tsx": $store_theme_editor_chip,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

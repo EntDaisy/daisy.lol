@@ -10,12 +10,13 @@ interface AuthModalProps {
 export const authPage = signal<'login' | 'join'>('login');
 const authOpen = signal(false);
 const _authOpen = signal(false);
+const _redirect = signal<string | undefined>(undefined);
 
-export const openAuthModal = (page: 'login' | 'join') => {
-	console.log(page);
+export const openAuthModal = (page: 'login' | 'join', redirect?: string) => {
 	authPage.value = page;
 	authOpen.value = true;
 	_authOpen.value = true;
+	_redirect.value = redirect;
 };
 export const closeAuthModal = () => {
 	_authOpen.value = false;
@@ -49,9 +50,9 @@ export function AuthModal({ verifyId }: AuthModalProps) {
             group-data-[open=true]:animate-scaleIn group-data-[open=false]:animate-scaleOut'
 					>
 						{authPage.value === 'join' ? (
-							<Join verifyId={verifyId} />
+							<Join verifyId={verifyId} redirect={_redirect.value} />
 						) : (
-							<Login />
+							<Login redirect={_redirect.value} />
 						)}
 					</div>
 				</div>

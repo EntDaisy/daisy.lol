@@ -10,11 +10,13 @@ import { authPage } from './modal.tsx';
 
 interface JoinProps {
 	verifyId: string;
+	redirect?: string;
+	useAnchor?: boolean;
 }
 
 const cache = new Map<string, EntryUser>();
 
-export function Join({ verifyId }: JoinProps) {
+export function Join({ verifyId, redirect, useAnchor }: JoinProps) {
 	const username = useSignal('');
 	const password = useSignal('');
 	const entryId = useSignal('');
@@ -72,8 +74,10 @@ export function Join({ verifyId }: JoinProps) {
 					method: 'POST',
 					body: new FormData(e.target as HTMLFormElement),
 				}).then((res) => res.json());
-				if (res.success) location.reload();
-				else if (res.message) errorMessage.value = res.message;
+				if (res.success) {
+					if (redirect) location.href = redirect;
+					else location.reload();
+				} else if (res.message) errorMessage.value = res.message;
 			}}
 		>
 			<div class='flex items-center gap-x-2 px-2 mt-6'>
@@ -283,15 +287,26 @@ export function Join({ verifyId }: JoinProps) {
 			</button>
 			<div class='flex w-full mt-2.5 mb-5 font-medium text-sm'>
 				<span class='text-zinc-500'>계정이 있으신가요?&nbsp;</span>
-				<button
-					type='button'
-					class='text-brand-400 hover:underline cursor-pointer'
-					onClick={() => {
-						authPage.value = 'login';
-					}}
-				>
-					로그인
-				</button>
+				{useAnchor ? (
+					<a
+						href={`/login${
+							redirect ? `?redirect=${encodeURIComponent(redirect)}` : ''
+						}`}
+						class='text-brand-400 hover:underline cursor-pointer'
+					>
+						로그인
+					</a>
+				) : (
+					<button
+						type='button'
+						class='text-brand-400 hover:underline cursor-pointer'
+						onClick={() => {
+							authPage.value = 'login';
+						}}
+					>
+						로그인
+					</button>
+				)}
 			</div>
 		</form>
 	);
